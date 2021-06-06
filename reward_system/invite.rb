@@ -7,7 +7,9 @@ module RewardSystem
     attr_reader :customer_id, :friend_id, :status, :id, :invited_at
 
     def self.create(customer_id:, friend_id:, status:, invited_at:)
-      REPO.add_invite(new(customer_id, friend_id, status, invited_at))
+      invite = new(customer_id, friend_id, status, invited_at)
+      REPO.add_invite(invite)
+      invite
     end
 
     def self.update!(friend:, status:)
