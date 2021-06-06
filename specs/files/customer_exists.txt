@@ -1,0 +1,3 @@
+2018-06-12 09:41 A recommends B
+2018-06-14 09:41 B accepts
+2018-06-16 09:41 B accepts
