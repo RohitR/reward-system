@@ -2,33 +2,56 @@
 
 module RewardSystem
   module Errors
-    # top level class for user related exceptions
-    class UserError < StandardError
-      def initialize(user)
-        @user = user
+    # top level class for customer related exceptions
+    class FileParserError < StandardError
+      def initialize(command)
+        @command = command
+      end
+
+      def message
+        "'#{@command}' Not a valid command. "
       end
     end
 
-    # User without invitation
-    class CustomerNotInvited < UserError
+    # customer without invitation
+    class CustomerNotInvited < FileParserError
       def message
         "Customer #{@user} is not invited by anyone"
       end
     end
 
-    # User not found
-    class CustomerNotFound < UserError
+    # customer not found
+    class CustomerNotFound < FileParserError
       def message
-        "Customer #{@user} is not existing in the system. "\
-        "Someone should recommend #{@user} before accept or rejection"
+        super + 'Someone should recommend before accept or rejection'
       end
     end
 
-    # User not found
-    class CustomerExists < UserError
+    # Customer name is blank
+    class CustomerNameBlank < FileParserError
       def message
-        "Customer #{@user} is already existing in the system. "\
-        'You canot update an active customer'
+        super + 'Customer name is blank'
+      end
+    end
+
+    # customer not found
+    class CustomerExists < FileParserError
+      def message
+        super + 'You canot update an active customer'
+      end
+    end
+
+    # customer recommends itself
+    class CustomerRecommendsItself < FileParserError
+      def message
+        super + 'Customer Recommends itself.'
+      end
+    end
+
+    # customer should be root or invitation accepted to recommend others.
+    class CustomerInactive < FileParserError
+      def message
+        super + 'An inactive customer can not recommend anyone. '\
       end
     end
 

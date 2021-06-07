@@ -2,7 +2,7 @@
 
 require 'securerandom'
 require 'singleton'
-Dir[File.dirname(__FILE__) + '/reward_system/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/reward_system/**/*.rb'].each { |file| require file }
 require 'json'
 
 module RewardSystem

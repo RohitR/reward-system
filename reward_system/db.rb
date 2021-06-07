@@ -16,8 +16,7 @@ module RewardSystem
           build_invite(command)
         else
           friend = Customer.find_by_name(command['customer'])
-          raise Errors::CustomerNotFound, command['customer'] unless friend
-          raise Errors::CustomerExists, friend.name if friend.active?
+          Respond.new(command, friend).validate!
 
           Invite.update!(friend: friend, status: command['action'])
         end
@@ -25,6 +24,8 @@ module RewardSystem
     end
 
     attr_reader :file
+
+    private
 
     def commands
       FileParser.build(file).sort_by do |command|
@@ -39,7 +40,7 @@ module RewardSystem
     def build_invite(command)
       customer = Customer.find_or_create(name: command['customer'])
       friend = Customer.find_or_create(name: command['friend'].strip)
-      raise Errors::CustomerExists, friend.name if friend.active?
+      Recommend.new(command, friend, customer).validate!
 
       Invite.create(
         customer_id: customer.id,

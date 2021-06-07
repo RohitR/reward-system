@@ -34,6 +34,10 @@ module RewardSystem
       end
     end
 
+    def absolute_root?
+      REPO.invites.none? { |invite| invite.friend_id == id }
+    end
+
     def parent
       # Any customer other than root will have an accepted invite.
       # Invite can be used to identify the invited.
